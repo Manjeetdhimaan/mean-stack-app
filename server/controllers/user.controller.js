@@ -35,7 +35,6 @@ module.exports.authenticate = (req, res, next) => {
         });
         // unknown user or wrong password
         else {
-            console.log(info)
             return res.status(404).json(info);
         }
     })(req, res, next);
@@ -58,6 +57,22 @@ module.exports.userProfile = (req, res, next) => {
                 });
         }
     );
+}
+
+module.exports.getUsers = (req, res, next) => {
+    User.find((err, user) => {
+        if (!user)
+            return res.status(404).json({
+                status: false,
+                message: 'User record not found.'
+            });
+        else
+            return res.status(200).json({
+                status: true,
+                user: user
+            });
+    }
+);
 }
 
 module.exports.updateUserProfile = (req, res, next) => {

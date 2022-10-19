@@ -3,6 +3,7 @@ const passport = require('passport');
 const _ = require('lodash');
 
 const Admin = mongoose.model('Admin');
+const User = mongoose.model('User');
 
 module.exports.register = (req, res, next) => {
     var admin = new Admin();
@@ -28,13 +29,15 @@ module.exports.authenticate = (req, res, next) => {
         // error from passport middleware
         if (err) return res.status(400).json(err);
         // registered user
-        else if (user) return res.status(200).json({
-            "token": user.generateJwt(),
-            "_id": user['_id']
-        });
+        else if (user) {
+            return res.status(200).json({
+                "token": user.generateJwt(),
+                "_id": user['_id']
+            });
+        }
+          
         // unknown user or wrong password
         else {
-            console.log(info)
             return res.status(404).json(info);
         }
     })(req, res, next);
@@ -59,8 +62,25 @@ module.exports.adminProfile = (req, res, next) => {
     );
 }
 
+module.exports.getUsers = (req, res, next) => {
+    console.log("called")
+    User.find((err, user) => {
+        if (!user)
+            return res.status(404).json({
+                status: false,
+                message: 'User record not found.'
+            });
+        else
+            return res.status(200).json({
+                status: true,
+                user: user
+            });
+    }
+);
+}
+
 module.exports.updateUserProfile = (req, res, next) => {
-    User.findByIdAndUpdate({
+    Admin.findByIdAndUpdate({
         _id: req._id
     }, {
         fullName: req.body.fullname,

@@ -10,7 +10,7 @@ const path = require('path');
 
 const rtsIndex = require('./routes/index.router');
 
-var app = express();
+const app = express();
 
 // middleware
 app.use(bodyParser.json());

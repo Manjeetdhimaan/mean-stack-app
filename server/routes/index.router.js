@@ -14,6 +14,7 @@ router.put('/updateUserProfile',jwtHelper.verifyJwtToken, ctrlUser.updateUserPro
 // admin controllers
 router.post('/admin/authenticate', ctrlAdmin.authenticate);
 router.get('/admin/adminProfile',jwtHelper.verifyJwtToken, ctrlAdmin.adminProfile);
+router.get('/admin/getUsers',jwtHelper.verifyJwtToken, ctrlAdmin.getUsers);
 router.post('/admin/register', ctrlAdmin.register);
 
 module.exports = router;
